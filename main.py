@@ -14,7 +14,7 @@ sns.set_style("whitegrid")
 def main():
     print("=== GIAI ĐOẠN 1: TIỀN XỬ LÝ DỮ LIỆU ===")
     # 1. Đọc dữ liệu
-    df = pd.read_csv('Wiki_Page_views.csv')
+    df = pd.read_csv('data/Wiki_Page_views.csv')
     
     # 2. Lấy dữ liệu bài viết "Back to the Future" (dòng số 3)
     row_index = 3
@@ -23,7 +23,7 @@ def main():
     
     # 3. Chuyển đổi định dạng Pivot -> Time Series
     df_target = df.iloc[row_index, 1:].to_frame(name='Views')
-    df_target.index = pd.to_datetime(df_target.index)
+    df_target.index = pd.to_datetime(df_target.index, format='%Y%m%d%H', errors='coerce')
     df_target['Views'] = pd.to_numeric(df_target['Views'], errors='coerce')
     
     # 4. Xử lý giá trị thiếu (Forward Fill)
