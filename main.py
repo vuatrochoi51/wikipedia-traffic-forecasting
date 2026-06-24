@@ -13,7 +13,7 @@ sns.set_style("whitegrid")
 
 def main():
     print("=== GIAI ĐOẠN 1: TIỀN XỬ LÝ DỮ LIỆU ===")
-    # 1. Đọc dữ liệu (Sửa đường dẫn nếu cần)
+    # 1. Đọc dữ liệu
     df = pd.read_csv('Wiki_Page_views.csv')
     
     # 2. Lấy dữ liệu bài viết "Back to the Future" (dòng số 3)
