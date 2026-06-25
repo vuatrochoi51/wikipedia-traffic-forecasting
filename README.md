@@ -20,4 +20,23 @@ This repository contains the source code and documentation for a Time Series Ana
 ## 🚀 How to Run
 1. Clone this repository:
    ```bash
-   git clone [https://github.com/yourusername/wikipedia-traffic-forecasting.git](https://github.com/yourusername/wikipedia-traffic-forecasting.git)
+   git clone [https://github.com/vuatrochoi51/wikipedia-traffic-forecasting.git](https://github.com/vuatrochoi51/wikipedia-traffic-forecasting.git)
+2. Install dependencies
+
+pip install -r requirements.txt
+
+3. Get the dataset
+
+Download Wiki_Page_views.csv from the Kaggle Web Traffic Time Series Forecasting competition
+
+3. Run
+
+  mkdir images
+  python main.py
+
+
+Results
+
+ModelRMSESeasonal?ARMA(2,2)349.83No – flat forecastSARIMA(1,0,1)(1,0,1,7)448.89Yes – 7-day cycle
+
+SARIMA is the superior model despite higher RMSE. ARMA achieves lower error by always predicting the mean — structurally useless. SARIMA's higher RMSE is caused by unpredictable traffic spikes in the test window being amplified by the squared-error penalty in MSE.

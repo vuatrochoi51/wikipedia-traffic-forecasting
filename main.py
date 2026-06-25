@@ -8,31 +8,26 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-# Cài đặt style mặc định cho biểu đồ
 sns.set_style("whitegrid")
 
 def main():
     print("=== GIAI ĐOẠN 1: TIỀN XỬ LÝ DỮ LIỆU ===")
-    # 1. Đọc dữ liệu
+
     df = pd.read_csv('data/Wiki_Page_views.csv')
     
-    # 2. Lấy dữ liệu bài viết "Back to the Future" (dòng số 3)
     row_index = 3
     page_name = df.iloc[row_index, 0]
     print(f"Đang xử lý bài viết: {page_name}")
     
-    # 3. Chuyển đổi định dạng Pivot -> Time Series
     df_target = df.iloc[row_index, 1:].to_frame(name='Views')
     df_target.index = pd.to_datetime(df_target.index, format='%Y%m%d%H', errors='coerce')
     df_target['Views'] = pd.to_numeric(df_target['Views'], errors='coerce')
-    
-    # 4. Xử lý giá trị thiếu (Forward Fill)
+
     df_target['Views'] = df_target['Views'].ffill()
 
     print("\n=== GIAI ĐOẠN 2: THỐNG KÊ MÔ TẢ ===")
     print(df_target.describe())
-    
-    # Vẽ biểu đồ Histogram
+
     plt.figure(figsize=(10, 5))
     sns.histplot(df_target['Views'], bins=30, kde=True, color='purple')
     plt.title('Daily Page Views Distribution (Histogram)', fontsize=14, fontweight='bold')
@@ -42,7 +37,7 @@ def main():
     plt.close()
 
     print("\n=== GIAI ĐOẠN 3: KIỂM ĐỊNH TÍNH DỪNG ===")
-    # 1. Bóc tách chuỗi thời gian (Decomposition)
+
     decomposition = seasonal_decompose(df_target['Views'], model='additive', period=7)
     fig = decomposition.plot()
     fig.set_size_inches(14, 8)
@@ -50,13 +45,12 @@ def main():
     plt.savefig('images/decomposition.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-    # 2. Kiểm định ADF
     result = adfuller(df_target['Views'])
     print(f'ADF Statistic: {result[0]}')
     print(f'p-value: {result[1]}')
 
     print("\n=== GIAI ĐOẠN 4: CHỌN THAM SỐ & ARMA ===")
-    # Vẽ ACF và PACF
+
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
     plot_acf(df_target['Views'], lags=40, ax=axes[0], color='blue')
     axes[0].set_title('Autocorrelation Function (ACF)')
@@ -71,17 +65,14 @@ def main():
     plt.savefig('images/acf_pacf.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-    # Chia tập Train/Test (Dự báo 30 ngày cuối)
     train = df_target.iloc[:-30]
     test = df_target.iloc[-30:]
 
-    # Huấn luyện ARMA(2,2) vì d=0
     print("Huấn luyện mô hình ARMA(2,2)...")
     model_arma = ARIMA(train['Views'], order=(2, 0, 2))
     results_arma = model_arma.fit()
     predictions_arma = results_arma.forecast(steps=30)
     
-    # Vẽ biểu đồ dự báo ARMA
     plt.figure(figsize=(14, 6))
     plt.plot(train.index[-60:], train.iloc[-60:]['Views'], label='Training Data', color='green')
     plt.plot(test.index, test['Views'], label='Actual Data (Test)', color='blue')
@@ -101,7 +92,6 @@ def main():
     print(results_sarima.summary())
     predictions_sarima = results_sarima.forecast(steps=30)
 
-    # Vẽ biểu đồ dự báo SARIMA
     plt.figure(figsize=(14, 6))
     plt.plot(train.index[-60:], train.iloc[-60:]['Views'], label='Training Data', color='green')
     plt.plot(test.index, test['Views'], label='Actual Data (Test)', color='blue')
