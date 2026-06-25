@@ -27,9 +27,9 @@ This repository contains the source code and documentation for a Time Series Ana
 
 3. Run
 
-&nbsp;mkdir images
+&nbsp;&nbsp;&nbsp;&nbsp;mkdir images
 
-&nbsp;python main.py
+&nbsp;&nbsp;&nbsp;&nbsp;python main.py
 
 DATASET : Download Wiki_Page_views.csv from the Kaggle Web Traffic Time Series Forecasting competition
 
