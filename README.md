@@ -23,17 +23,14 @@ This repository contains the source code and documentation for a Time Series Ana
    git clone [https://github.com/vuatrochoi51/wikipedia-traffic-forecasting.git](https://github.com/vuatrochoi51/wikipedia-traffic-forecasting.git)
 2. Install dependencies
 
-pip install -r requirements.txt
-
-3. Get the dataset
-
-Download Wiki_Page_views.csv from the Kaggle Web Traffic Time Series Forecasting competition
+  pip install -r requirements.txt
 
 3. Run
 
   mkdir images
   python main.py
 
+DATASET : Download Wiki_Page_views.csv from the Kaggle Web Traffic Time Series Forecasting competition
 
 Results
 
